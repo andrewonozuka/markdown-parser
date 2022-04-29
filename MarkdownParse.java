@@ -20,19 +20,32 @@ public class MarkdownParse {
             int openParen = markdown.indexOf("(", closeBracket);
             int closeParen = markdown.indexOf(")", openParen);
 
-            if (openBracket == -1 || closeBracket == -1 || openParen == -1 || closeParen == -1) {
-                currentIndex = markdown.length();
-                break; // prevents infinite loop
-            } else if (closeBracket + 1 == openParen && openBracket != -1) {
-                if (markdown.indexOf("\n", openBracket) < closeParen) {
-                    currentIndex = closeParen;
-                } else if (markdown.charAt(openBracket - 1) == '!') {
-                    currentIndex = closeParen + 1; 
-                } else {
+            if (openParen != -1 && closeParen != -1) {
+                if (closeBracket == openParen - 1) {
                     toReturn.add(markdown.substring(openParen + 1, closeParen));
-                    currentIndex = closeParen + 1;
                 }
             }
+            currentIndex = closeParen + 1;
+            // System.out.println("new addition");
+
+            if (markdown.indexOf("[", currentIndex) == -1 || markdown.indexOf("(", currentIndex) == -1) {
+                break;
+            }
+
+            // if (openBracket == -1 || closeBracket == -1 || openParen == -1 || closeParen == -1) {
+            //     currentIndex = markdown.length();
+            //     break; // prevents infinite loop
+            // } else if (closeBracket + 1 == openParen && openBracket != -1) {
+            //     if (markdown.indexOf("\n", openBracket) < closeParen) {
+            //         currentIndex = closeParen;
+            //     } else if (markdown.charAt(openBracket - 1) == '!') {
+            //         currentIndex = closeParen + 1; 
+            //     } else {
+            //         toReturn.add(markdown.substring(openParen + 1, closeParen));
+            //         currentIndex = closeParen + 1;
+            //     }
+            // }
+
             // toReturn.add(markdown.substring(openParen + 1, closeParen));
             // currentIndex = closeParen + 1;
             // System.out.println(currentIndex);
