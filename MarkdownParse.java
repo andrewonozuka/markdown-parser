@@ -30,10 +30,13 @@ public class MarkdownParse {
 
     }
     public static Map<String, List<String>> getLinks(File dirOrFile) throws IOException {
+        int count = 0;
         Map<String, List<String>> result = new HashMap<>();
         if(dirOrFile.isDirectory()) {
             for(File f: dirOrFile.listFiles()) {
                 result.putAll(getLinks(f));
+                System.out.println(count);
+                count++;
             }
             return result;
         }
