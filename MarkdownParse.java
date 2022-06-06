@@ -21,13 +21,8 @@ public class MarkdownParse {
             }
             closeParen++;
         }
-        if(openParenCount == 0) {
-          return closeParen - 1;
-        }
-        else {
-          return -1;
-        }
-
+        if(openParenCount == 0) { return closeParen - 1; }
+        else { return -1; }
     }
     public static Map<String, List<String>> getLinks(File dirOrFile) throws IOException {
         Map<String, List<String>> result = new HashMap<>();
@@ -76,16 +71,28 @@ public class MarkdownParse {
                 toReturn.add(potentialLink);
                 currentIndex = closeParen + 1;
             }
-            else {
-                currentIndex = currentIndex + 1;
-            }
-        }
-        return toReturn;
+            else { currentIndex = currentIndex + 1; }
+        } return toReturn;
     }
     public static void main(String[] args) throws IOException {
-        Path fileName = Path.of(args[0]);
-        String contents = Files.readString(fileName);
-        ArrayList<String> links = getLinks(contents);
-        System.out.println(links);
+        File file = new File(args[0]);
+        if (file.isDirectory()) {
+            File[] testFiles = file.listFiles();
+            for (File f : testFiles) {
+                String fileString = f.getName();
+                String mdextension = ".md";
+                if (fileString.substring(fileString.length()-3, fileString.length()).equals(mdextension)) {
+                    Path fileName = Path.of(args[0]+fileString);
+                    String content = Files.readString(fileName);
+                    ArrayList<String> links = getLinks(content);
+                    System.out.println(links);
+                }
+            }
+        } else {
+            Path fileName = Path.of(args[0]);
+            String contents = Files.readString(fileName);
+            ArrayList<String> links = getLinks(contents);
+            System.out.println(links);
+        }
     }
 }
